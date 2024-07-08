@@ -4,17 +4,84 @@
  */
 package com.sipsmea.panel;
 
+import java.sql.*;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import sipsmea.database;
+import utils.TableFunc;
+
 /**
  *
  * @author karel
  */
 public class NilaiAlternatif extends javax.swing.JPanel {
 
+    public Statement st; // memberikan statement perintah sql, select insert delete
+    public ResultSet rs; // membaca data di dalam db, membaca record di db
+    Connection cn = database.connectDb();
+
     /**
      * Creates new form NilaiAlternatif
      */
     public NilaiAlternatif() {
         initComponents();
+        refreshTable();
+        comboboxField();
+
+        TableFunc.centeringRow(tbAlternatif);
+    }
+
+    private void comboboxField() {
+        try {
+            String sql = "SELECT * FROM tempat_pkl";
+            Statement stmt = cn.createStatement();
+
+            ResultSet rs = stmt.executeQuery(sql);
+
+            cb1.removeAllItems();
+            cb2.removeAllItems();
+            cb3.removeAllItems();
+            cb4.removeAllItems();
+            cb5.removeAllItems();
+
+            while (rs.next()) {
+                String namaTempatPKL = rs.getString("nama_tempat").substring(0, 10);
+                cb1.addItem(namaTempatPKL);
+                cb2.addItem(namaTempatPKL);
+                cb3.addItem(namaTempatPKL);
+                cb4.addItem(namaTempatPKL);
+                cb5.addItem(namaTempatPKL);
+                
+            }
+
+            stmt.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Terjadi kesalahan: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void refreshTable() {
+        try {
+            DefaultTableModel m = (DefaultTableModel) tbAlternatif.getModel();
+
+            String q = "SELECT * FROM pilihan";
+            Statement s = cn.createStatement();
+            ResultSet r = s.executeQuery(q);
+            m.getDataVector().removeAllElements();
+            while (r.next()) {
+                String nama = r.getString("nama_tempat_pkl");
+                int rating = r.getInt("rating");
+                int dayaTampung = r.getInt("daya_tampung");
+                int aksesJalan = r.getInt("akses_jalan");
+                int peminat = r.getInt("peminat");
+                int jarak = r.getInt("jarak");
+                Object[] data = {nama, rating, dayaTampung, aksesJalan, peminat, jarak};
+                m.addRow(data);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("error: " + e.getMessage());
+        }
     }
 
     /**
@@ -26,19 +93,156 @@ public class NilaiAlternatif extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbAlternatif = new javax.swing.JTable();
+        cb1 = new javax.swing.JComboBox<>();
+        cb2 = new javax.swing.JComboBox<>();
+        cb3 = new javax.swing.JComboBox<>();
+        cb4 = new javax.swing.JComboBox<>();
+        cb5 = new javax.swing.JComboBox<>();
+        btnSimpanAlternatif = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(242, 249, 244));
+
+        jLabel1.setFont(new java.awt.Font("Liberation Sans Narrow", 1, 18)); // NOI18N
+        jLabel1.setText("NILAI ALTERNATIF");
+
+        jLabel2.setText("Alternatif Pilihan Tempat PKL");
+
+        tbAlternatif.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Nama", "Rating", "Daya Tampung", "Akses Jalan", "Peminat", "Jarak"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbAlternatif.setRowHeight(35);
+        tbAlternatif.setSelectionBackground(new java.awt.Color(51, 51, 51));
+        tbAlternatif.setShowGrid(true);
+        jScrollPane1.setViewportView(tbAlternatif);
+
+        cb1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--- Pilih Tempat --" }));
+        cb1.setMaximumSize(new java.awt.Dimension(135, 31));
+
+        cb2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--- Pilih Tempat --" }));
+        cb2.setMaximumSize(new java.awt.Dimension(135, 31));
+
+        cb3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--- Pilih Tempat --" }));
+        cb3.setMaximumSize(new java.awt.Dimension(135, 31));
+
+        cb4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--- Pilih Tempat --" }));
+        cb4.setMaximumSize(new java.awt.Dimension(135, 31));
+
+        cb5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--- Pilih Tempat --" }));
+        cb5.setMaximumSize(new java.awt.Dimension(135, 31));
+
+        btnSimpanAlternatif.setBackground(new java.awt.Color(102, 0, 204));
+        btnSimpanAlternatif.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
+        btnSimpanAlternatif.setForeground(new java.awt.Color(255, 255, 255));
+        btnSimpanAlternatif.setText("SIMPAN");
+        btnSimpanAlternatif.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSimpanAlternatifMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(200, 200, 200)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(jLabel1)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cb1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cb3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cb4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(cb2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cb5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSimpanAlternatif, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(13, 13, 13)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cb2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cb5, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cb1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cb3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cb4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnSimpanAlternatif, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSimpanAlternatifMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSimpanAlternatifMouseClicked
+        
+    }//GEN-LAST:event_btnSimpanAlternatifMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSimpanAlternatif;
+    private javax.swing.JComboBox<String> cb1;
+    private javax.swing.JComboBox<String> cb2;
+    private javax.swing.JComboBox<String> cb3;
+    private javax.swing.JComboBox<String> cb4;
+    private javax.swing.JComboBox<String> cb5;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tbAlternatif;
     // End of variables declaration//GEN-END:variables
 }

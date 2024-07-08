@@ -4,9 +4,20 @@
  */
 package com.sipsmea.gui;
 
+import com.sipsmea.panel.DaftarKriteria;
+import static com.sipsmea.panel.DaftarKriteria.centeringRow;
+import java.awt.Dimension;
+import java.sql.*;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import sipsmea.database;
 
 /**
  *
@@ -14,6 +25,9 @@ import javax.swing.JPanel;
  */
 public class dashboard extends javax.swing.JFrame {
 
+    public Statement st; // memberikan statement perintah sql, select insert delete
+    public ResultSet rs; // membaca data di dalam db, membaca record di db
+    Connection cn = database.connectDb();
     /**
      * Creates new form dashboard
      */
@@ -23,11 +37,9 @@ public class dashboard extends javax.swing.JFrame {
         ImageIcon icon = new ImageIcon("src/com/sipsmea/img/icon.png");
         setIconImage(icon.getImage());
         setTitle("SIPSMEA - SISTEM PENDUKUNG KEPUTUSAN PEMILIHAN TEMPAT PKL");
-//        PnCasher casher = new PnCasher();
-//        addRemovePanels(casher);
-//        if(activeBtn.equals("casher")){
-//            btnCasher.setBackground(new Color(0,0,153));
-//        }
+        
+        centeringRow(tb_kriteria);
+        refreshTable();
     }
 
     /**
@@ -39,7 +51,6 @@ public class dashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -56,18 +67,20 @@ public class dashboard extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        pnHome = new javax.swing.JPanel();
+        pnDashboard = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
         btnExit = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         pnUtama = new javax.swing.JPanel();
+        pnHome = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tb_kriteria = new javax.swing.JTable();
+        jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(255, 204, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -86,6 +99,11 @@ public class dashboard extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(207, 0, 99));
         jPanel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel4MouseClicked(evt);
+            }
+        });
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
@@ -150,10 +168,10 @@ public class dashboard extends javax.swing.JFrame {
 
         jPanel2.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 150, 40));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 170, 470));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 170, 470));
 
-        pnHome.setBackground(new java.awt.Color(242, 249, 244));
-        pnHome.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnDashboard.setBackground(new java.awt.Color(242, 249, 244));
+        pnDashboard.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel10.setBackground(new java.awt.Color(255, 255, 255));
         jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -181,36 +199,69 @@ public class dashboard extends javax.swing.JFrame {
         jLabel12.setText("Sistem Pendukung Keputusan Metode SAW");
         jPanel10.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
 
-        pnHome.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 570, 70));
+        pnDashboard.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 570, 70));
+
+        getContentPane().add(pnDashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 0, 570, 70));
 
         pnUtama.setBackground(new java.awt.Color(242, 249, 244));
-        pnUtama.setPreferredSize(new java.awt.Dimension(570, 400));
+        pnUtama.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout pnUtamaLayout = new javax.swing.GroupLayout(pnUtama);
-        pnUtama.setLayout(pnUtamaLayout);
-        pnUtamaLayout.setHorizontalGroup(
-            pnUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 570, Short.MAX_VALUE)
+        pnHome.setBackground(new java.awt.Color(242, 249, 244));
+
+        tb_kriteria.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, "", ""},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "No", "Nama Kriteria", "Jenis Kriteria"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tb_kriteria.setGridColor(new java.awt.Color(153, 153, 153));
+        tb_kriteria.setRowHeight(35);
+        tb_kriteria.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        jScrollPane1.setViewportView(tb_kriteria);
+
+        jLabel13.setFont(new java.awt.Font("Liberation Sans Narrow", 1, 18)); // NOI18N
+        jLabel13.setText("DAFTAR KRITERIA SPK");
+
+        javax.swing.GroupLayout pnHomeLayout = new javax.swing.GroupLayout(pnHome);
+        pnHome.setLayout(pnHomeLayout);
+        pnHomeLayout.setHorizontalGroup(
+            pnHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnHomeLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnHomeLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel13)
+                .addGap(189, 189, 189))
         );
-        pnUtamaLayout.setVerticalGroup(
-            pnUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        pnHomeLayout.setVerticalGroup(
+            pnHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnHomeLayout.createSequentialGroup()
+                .addContainerGap(19, Short.MAX_VALUE)
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(119, 119, 119))
         );
 
-        pnHome.add(pnUtama, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 570, 400));
+        pnUtama.add(pnHome, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(pnHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 0, 570, 470));
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        getContentPane().add(pnUtama, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, 570, 400));
 
         pack();
         setLocationRelativeTo(null);
@@ -226,6 +277,11 @@ public class dashboard extends javax.swing.JFrame {
             this.dispose();
         }
     }//GEN-LAST:event_btnExitMouseClicked
+
+    private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
+        DaftarKriteria dk = new DaftarKriteria();
+        addRemovePanels(dk);
+    }//GEN-LAST:event_jPanel4MouseClicked
 
     /**
      * @param args the command line arguments
@@ -270,6 +326,44 @@ public class dashboard extends javax.swing.JFrame {
         pnUtama.revalidate();
         pnUtama.repaint();
     }
+    
+    private void refreshTable(){
+       try {
+            DefaultTableModel m = (DefaultTableModel) tb_kriteria.getModel();
+            
+            String q = "SELECT * FROM kriteria";
+            Statement s = cn.createStatement();
+            ResultSet r = s.executeQuery(q);
+            m.getDataVector().removeAllElements();
+            while (r.next()) {
+                int id_kriteria = r.getInt("id");
+                String nama_kriteria = r.getString("nama_kriteria");
+                String jenis_kriteria = r.getString("jenis_kriteria");
+                Object[] data = {id_kriteria,nama_kriteria,jenis_kriteria};
+                m.addRow(data);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("error: " + e.getMessage());
+        }
+    }
+    
+    public static void centerHeaderTable(JTable t){
+        TableCellRenderer rendererFromHeader = t.getTableHeader().getDefaultRenderer();
+        JLabel headerLabel = (JLabel) rendererFromHeader;
+        headerLabel.setHorizontalAlignment(JLabel.CENTER);
+        JTableHeader header = t.getTableHeader();
+        header.setPreferredSize(new Dimension(header.getWidth(), 35));
+    }
+
+     public static void centeringRow(JTable j){
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for (int i = 0; i < j.getColumnCount(); i++) {
+            j.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        centerHeaderTable(j);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel btnExit;
@@ -277,6 +371,7 @@ public class dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -285,7 +380,6 @@ public class dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
@@ -294,7 +388,10 @@ public class dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel pnDashboard;
     private javax.swing.JPanel pnHome;
     private javax.swing.JPanel pnUtama;
+    private javax.swing.JTable tb_kriteria;
     // End of variables declaration//GEN-END:variables
 }

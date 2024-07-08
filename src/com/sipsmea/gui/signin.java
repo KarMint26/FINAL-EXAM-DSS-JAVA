@@ -80,7 +80,7 @@ public class signin extends javax.swing.JFrame {
 
         jLabel6.setText("Password");
 
-        btnSignin.setBackground(new java.awt.Color(207, 0, 99));
+        btnSignin.setBackground(new java.awt.Color(182, 0, 99));
         btnSignin.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         btnSignin.setForeground(new java.awt.Color(255, 255, 255));
         btnSignin.setText("MASUK");

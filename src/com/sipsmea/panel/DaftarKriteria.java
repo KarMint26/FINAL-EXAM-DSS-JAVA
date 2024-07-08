@@ -66,14 +66,22 @@ public class DaftarKriteria extends javax.swing.JPanel {
             Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         tb_kriteria.setGridColor(new java.awt.Color(153, 153, 153));
         tb_kriteria.setRowHeight(35);
-        tb_kriteria.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        tb_kriteria.setSelectionBackground(new java.awt.Color(51, 51, 51));
+        tb_kriteria.setShowGrid(true);
         jScrollPane1.setViewportView(tb_kriteria);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -95,8 +103,8 @@ public class DaftarKriteria extends javax.swing.JPanel {
                 .addContainerGap(20, Short.MAX_VALUE)
                 .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(119, 119, 119))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(121, 121, 121))
         );
     }// </editor-fold>//GEN-END:initComponents
 

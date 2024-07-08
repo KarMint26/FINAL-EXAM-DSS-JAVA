@@ -9,8 +9,10 @@ public class database {
 
             Class.forName("com.mysql.jdbc.Driver");
 
-            Connection connect = DriverManager.getConnection("jdbc:mysql://homelaundry.my.id/homelaun_sipsmea", 
-                    "homelaun_karel", "26November2003_");
+//            Connection connect = DriverManager.getConnection("jdbc:mysql://homelaundry.my.id/homelaun_sipsmea", 
+//                    "homelaun_karel", "26November2003_");
+            Connection connect = DriverManager.getConnection("jdbc:mysql://localhost/homelaun_sipsmea", 
+                    "karel", "26nov2003");
             System.out.println("Success Connected MYSQL Database");
             return connect;
         } catch (Exception e) {

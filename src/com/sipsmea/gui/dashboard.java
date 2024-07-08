@@ -6,6 +6,11 @@ package com.sipsmea.gui;
 
 import com.sipsmea.panel.DaftarKriteria;
 import static com.sipsmea.panel.DaftarKriteria.centeringRow;
+import com.sipsmea.panel.HasilSpk;
+import com.sipsmea.panel.NilaiAlternatif;
+import com.sipsmea.panel.NilaiBobot;
+import com.sipsmea.panel.Normalisasi;
+import com.sipsmea.panel.TempatPKL;
 import java.awt.Dimension;
 import java.sql.*;
 import javax.swing.ImageIcon;
@@ -55,17 +60,17 @@ public class dashboard extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
+        pnKriteria = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
+        pnTempatPkl = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jPanel6 = new javax.swing.JPanel();
+        pnBobot = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jPanel7 = new javax.swing.JPanel();
+        pnAlternatif = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        jPanel8 = new javax.swing.JPanel();
+        pnNormalisasi = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jPanel9 = new javax.swing.JPanel();
+        pnHasil = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         pnDashboard = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
@@ -97,76 +102,101 @@ public class dashboard extends javax.swing.JFrame {
         jLabel2.setText("sipsmea version 1.0.0");
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 450, -1, -1));
 
-        jPanel4.setBackground(new java.awt.Color(207, 0, 99));
-        jPanel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel4.addMouseListener(new java.awt.event.MouseAdapter() {
+        pnKriteria.setBackground(new java.awt.Color(207, 0, 99));
+        pnKriteria.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        pnKriteria.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel4MouseClicked(evt);
+                pnKriteriaMouseClicked(evt);
             }
         });
-        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnKriteria.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("DAFTAR KRITERIA");
-        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, 20));
+        pnKriteria.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, 20));
 
-        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 150, 40));
+        jPanel2.add(pnKriteria, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 150, 40));
 
-        jPanel5.setBackground(new java.awt.Color(207, 0, 99));
-        jPanel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnTempatPkl.setBackground(new java.awt.Color(207, 0, 99));
+        pnTempatPkl.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        pnTempatPkl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnTempatPklMouseClicked(evt);
+            }
+        });
+        pnTempatPkl.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel5.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("TEMPAT PKL");
-        jPanel5.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 90, 20));
+        pnTempatPkl.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 90, 20));
 
-        jPanel2.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 150, 40));
+        jPanel2.add(pnTempatPkl, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 150, 40));
 
-        jPanel6.setBackground(new java.awt.Color(207, 0, 99));
-        jPanel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnBobot.setBackground(new java.awt.Color(207, 0, 99));
+        pnBobot.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        pnBobot.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnBobotMouseClicked(evt);
+            }
+        });
+        pnBobot.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel6.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("NILAI BOBOT");
-        jPanel6.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, 20));
+        pnBobot.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, 20));
 
-        jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 150, 40));
+        jPanel2.add(pnBobot, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 150, 40));
 
-        jPanel7.setBackground(new java.awt.Color(207, 0, 99));
-        jPanel7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnAlternatif.setBackground(new java.awt.Color(207, 0, 99));
+        pnAlternatif.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        pnAlternatif.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnAlternatifMouseClicked(evt);
+            }
+        });
+        pnAlternatif.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel7.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("NILAI ALTERNATIF");
-        jPanel7.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, 20));
+        pnAlternatif.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, 20));
 
-        jPanel2.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 150, 40));
+        jPanel2.add(pnAlternatif, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 150, 40));
 
-        jPanel8.setBackground(new java.awt.Color(207, 0, 99));
-        jPanel8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnNormalisasi.setBackground(new java.awt.Color(207, 0, 99));
+        pnNormalisasi.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        pnNormalisasi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnNormalisasiMouseClicked(evt);
+            }
+        });
+        pnNormalisasi.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel8.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("NORMALISASI");
-        jPanel8.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, 20));
+        pnNormalisasi.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, 20));
 
-        jPanel2.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 150, 40));
+        jPanel2.add(pnNormalisasi, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 150, 40));
 
-        jPanel9.setBackground(new java.awt.Color(207, 0, 99));
-        jPanel9.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnHasil.setBackground(new java.awt.Color(207, 0, 99));
+        pnHasil.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        pnHasil.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnHasilMouseClicked(evt);
+            }
+        });
+        pnHasil.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel9.setFont(new java.awt.Font("Liberation Sans", 1, 13)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("HASIL SPK");
-        jPanel9.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, 20));
+        pnHasil.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, 20));
 
-        jPanel2.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 150, 40));
+        jPanel2.add(pnHasil, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 150, 40));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 170, 470));
 
@@ -223,14 +253,22 @@ public class dashboard extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         tb_kriteria.setGridColor(new java.awt.Color(153, 153, 153));
         tb_kriteria.setRowHeight(35);
-        tb_kriteria.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        tb_kriteria.setSelectionBackground(new java.awt.Color(51, 51, 51));
+        tb_kriteria.setShowGrid(true);
         jScrollPane1.setViewportView(tb_kriteria);
 
         jLabel13.setFont(new java.awt.Font("Liberation Sans Narrow", 1, 18)); // NOI18N
@@ -255,8 +293,8 @@ public class dashboard extends javax.swing.JFrame {
                 .addContainerGap(19, Short.MAX_VALUE)
                 .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(119, 119, 119))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(121, 121, 121))
         );
 
         pnUtama.add(pnHome, java.awt.BorderLayout.CENTER);
@@ -278,10 +316,35 @@ public class dashboard extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnExitMouseClicked
 
-    private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
+    private void pnKriteriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnKriteriaMouseClicked
         DaftarKriteria dk = new DaftarKriteria();
         addRemovePanels(dk);
-    }//GEN-LAST:event_jPanel4MouseClicked
+    }//GEN-LAST:event_pnKriteriaMouseClicked
+
+    private void pnBobotMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnBobotMouseClicked
+        NilaiBobot nb = new NilaiBobot();
+        addRemovePanels(nb);
+    }//GEN-LAST:event_pnBobotMouseClicked
+
+    private void pnTempatPklMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnTempatPklMouseClicked
+        TempatPKL tp = new TempatPKL();
+        addRemovePanels(tp);
+    }//GEN-LAST:event_pnTempatPklMouseClicked
+
+    private void pnAlternatifMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnAlternatifMouseClicked
+        NilaiAlternatif na = new NilaiAlternatif();
+        addRemovePanels(na);
+    }//GEN-LAST:event_pnAlternatifMouseClicked
+
+    private void pnNormalisasiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnNormalisasiMouseClicked
+        Normalisasi n = new Normalisasi();
+        addRemovePanels(n);
+    }//GEN-LAST:event_pnNormalisasiMouseClicked
+
+    private void pnHasilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnHasilMouseClicked
+        HasilSpk hspk = new HasilSpk();
+        addRemovePanels(hspk);
+    }//GEN-LAST:event_pnHasilMouseClicked
 
     /**
      * @param args the command line arguments
@@ -382,15 +445,15 @@ public class dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel pnAlternatif;
+    private javax.swing.JPanel pnBobot;
     private javax.swing.JPanel pnDashboard;
+    private javax.swing.JPanel pnHasil;
     private javax.swing.JPanel pnHome;
+    private javax.swing.JPanel pnKriteria;
+    private javax.swing.JPanel pnNormalisasi;
+    private javax.swing.JPanel pnTempatPkl;
     private javax.swing.JPanel pnUtama;
     private javax.swing.JTable tb_kriteria;
     // End of variables declaration//GEN-END:variables

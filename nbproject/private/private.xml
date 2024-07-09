@@ -3,8 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/karel/NetBeansProjects/SIPSMEA/src/com/sipsmea/panel/TempatPKL.java</file>
-            <file>file:/home/karel/NetBeansProjects/SIPSMEA/src/com/sipsmea/gui/dashboard.java</file>
+            <file>file:/home/karel/NetBeansProjects/SIPSMEA/src/com/sipsmea/panel/HasilSpk.java</file>
+            <file>file:/home/karel/NetBeansProjects/SIPSMEA/src/com/sipsmea/panel/Normalisasi.java</file>
+            <file>file:/home/karel/NetBeansProjects/SIPSMEA/src/utils/TableFunc.java</file>
             <file>file:/home/karel/NetBeansProjects/SIPSMEA/src/com/sipsmea/panel/NilaiBobot.java</file>
             <file>file:/home/karel/NetBeansProjects/SIPSMEA/src/com/sipsmea/panel/NilaiAlternatif.java</file>
         </group>

@@ -4,17 +4,51 @@
  */
 package com.sipsmea.panel;
 
+import java.sql.*;
+import javax.swing.table.DefaultTableModel;
+import sipsmea.database;
+import utils.TableFunc;
+
 /**
  *
  * @author karel
  */
 public class HasilSpk extends javax.swing.JPanel {
 
+    public Statement st; // memberikan statement perintah sql, select insert delete
+    public ResultSet rs; // membaca data di dalam db, membaca record di db
+    Connection cn = database.connectDb();
+
     /**
      * Creates new form HasilSpk
      */
     public HasilSpk() {
         initComponents();
+        refreshTable();
+
+        TableFunc.centeringRow(tbHasil);
+    }
+
+    private void refreshTable() {
+        int count = 1;
+        try {
+            DefaultTableModel m = (DefaultTableModel) tbHasil.getModel();
+
+            String q = "SELECT * FROM hasil_spk ORDER BY hasil DESC";
+            Statement s = cn.createStatement();
+            ResultSet r = s.executeQuery(q);
+            m.getDataVector().removeAllElements();
+            while (r.next()) {
+                String nama = r.getString("nama_tempat_pkl");
+                double hasil = r.getDouble("hasil");
+                Object[] data = {count, nama, hasil};
+                m.addRow(data);
+                count++;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("error: " + e.getMessage());
+        }
     }
 
     /**
@@ -26,19 +60,77 @@ public class HasilSpk extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbHasil = new javax.swing.JTable();
+
+        setBackground(new java.awt.Color(242, 249, 244));
+
+        jLabel1.setFont(new java.awt.Font("Liberation Sans Narrow", 1, 18)); // NOI18N
+        jLabel1.setText("HASIL PERANKINGAN SPK");
+
+        tbHasil.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, "", null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "No", "Nama Tempat PKL", "Nilai Vektor"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbHasil.setGridColor(new java.awt.Color(153, 153, 153));
+        tbHasil.setRowHeight(35);
+        tbHasil.setSelectionBackground(new java.awt.Color(51, 51, 51));
+        tbHasil.setShowGrid(true);
+        jScrollPane1.setViewportView(tbHasil);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(182, 182, 182)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(120, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tbHasil;
     // End of variables declaration//GEN-END:variables
 }

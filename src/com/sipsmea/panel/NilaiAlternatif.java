@@ -51,7 +51,7 @@ public class NilaiAlternatif extends javax.swing.JPanel {
                 cb3.addItem(namaTempatPKL);
                 cb4.addItem(namaTempatPKL);
                 cb5.addItem(namaTempatPKL);
-                
+
             }
 
             stmt.close();
@@ -215,10 +215,11 @@ public class NilaiAlternatif extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cb2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cb5, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cb1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cb1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(cb2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cb5, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cb3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -229,7 +230,73 @@ public class NilaiAlternatif extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSimpanAlternatifMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSimpanAlternatifMouseClicked
-        
+        try {
+            // Ambil nilai terpilih dari ComboBox
+            String[] namaTempatPkl = {
+                String.valueOf(cb1.getSelectedItem()),
+                String.valueOf(cb2.getSelectedItem()),
+                String.valueOf(cb3.getSelectedItem()),
+                String.valueOf(cb4.getSelectedItem()),
+                String.valueOf(cb5.getSelectedItem())
+            };
+
+            int id = 1;
+
+            for (String namaTempat : namaTempatPkl) {
+                // Query untuk mengambil data berdasarkan nama_tempat dengan pola LIKE
+                String selectSql = "SELECT * FROM tempat_pkl WHERE nama_tempat LIKE ?";
+                try (PreparedStatement selectStmt = cn.prepareStatement(selectSql)) {
+                    selectStmt.setString(1, "%" + namaTempat.trim() + "%");
+                    try (ResultSet rs = selectStmt.executeQuery()) {
+                        if (rs.next()) {
+                            if (rs.getString("nama_tempat").substring(0, Math.min(10, rs.getString("nama_tempat")
+                                    .length())).equalsIgnoreCase(namaTempat.substring(0, Math.min(10, namaTempat.length())))) {
+                                int rating = rs.getInt("rating");
+                                int dayaTampung = rs.getInt("daya_tampung");
+                                int aksesJalan = rs.getInt("akses_jalan");
+                                int peminat = rs.getInt("peminat");
+                                int jarak = rs.getInt("jarak");
+                                String namaT = rs.getString("nama_tempat");
+
+                                // Update data
+                                String updateSql = "UPDATE pilihan SET rating=?, daya_tampung=?, "
+                                        + "akses_jalan=?, peminat=?, jarak=?, nama_tempat_pkl=? WHERE id=?";
+                                try (PreparedStatement updateStmt = cn.prepareStatement(updateSql)) {
+                                    updateStmt.setInt(1, rating);
+                                    updateStmt.setInt(2, dayaTampung);
+                                    updateStmt.setInt(3, aksesJalan);
+                                    updateStmt.setInt(4, peminat);
+                                    updateStmt.setInt(5, jarak);
+                                    updateStmt.setString(6, namaT);
+                                    updateStmt.setInt(7, id);
+
+                                    int rowsUpdated = updateStmt.executeUpdate();
+                                    if (rowsUpdated > 0) {
+                                        System.out.println("Data berhasil diperbarui untuk nama_tempat: " + namaTempat);
+                                    } else {
+                                        System.out.println("Tidak ada data yang diperbarui untuk nama_tempat: " + namaTempat);
+                                    }
+                                }
+                                id++;
+                            } else {
+                                System.out.println("Nama tempat tidak cocok untuk: " + namaTempat);
+                            }
+                        } else {
+                            System.out.println("Data tidak ditemukan untuk nama_tempat: " + namaTempat);
+                        }
+                    }
+                }
+            }
+
+            refreshTable();
+            JOptionPane.showMessageDialog(null, "Data telah diperbarui.", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            TableFunc.setMinMax();
+            TableFunc.setNormalisasi();
+            TableFunc.setHasilSpk();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Terjadi kesalahan: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace(); // Cetak stack trace untuk debugging lebih lanjut
+        }
     }//GEN-LAST:event_btnSimpanAlternatifMouseClicked
 
 

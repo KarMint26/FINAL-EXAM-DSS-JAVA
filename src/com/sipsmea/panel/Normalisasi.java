@@ -4,17 +4,53 @@
  */
 package com.sipsmea.panel;
 
+import java.sql.*;
+import javax.swing.table.DefaultTableModel;
+import sipsmea.database;
+import utils.TableFunc;
+
 /**
  *
  * @author karel
  */
 public class Normalisasi extends javax.swing.JPanel {
 
+    public Statement st; // memberikan statement perintah sql, select insert delete
+    public ResultSet rs; // membaca data di dalam db, membaca record di db
+    Connection cn = database.connectDb();
+    
     /**
      * Creates new form Normalisasi
      */
     public Normalisasi() {
         initComponents();
+        refreshTable();
+
+        TableFunc.centeringRow(tbNormalisasi);
+    }
+    
+    private void refreshTable() {
+        try {
+            DefaultTableModel m = (DefaultTableModel) tbNormalisasi.getModel();
+
+            String q = "SELECT * FROM normalisasi";
+            Statement s = cn.createStatement();
+            ResultSet r = s.executeQuery(q);
+            m.getDataVector().removeAllElements();
+            while (r.next()) {
+                String nama = r.getString("nama_tempat_pkl");
+                double rating = r.getDouble("rating");
+                double dayaTampung = r.getDouble("daya_tampung");
+                double aksesJalan = r.getDouble("akses_jalan");
+                double peminat = r.getDouble("peminat");
+                double jarak = r.getDouble("jarak");
+                Object[] data = {nama, rating, dayaTampung, aksesJalan, peminat, jarak};
+                m.addRow(data);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("error: " + e.getMessage());
+        }
     }
 
     /**
@@ -26,19 +62,75 @@ public class Normalisasi extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbNormalisasi = new javax.swing.JTable();
+
+        setBackground(new java.awt.Color(242, 249, 244));
+
+        jLabel1.setFont(new java.awt.Font("Liberation Sans Narrow", 1, 18)); // NOI18N
+        jLabel1.setText("NILAI NORMALISASI SPK");
+
+        tbNormalisasi.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Nama", "Rating", "Daya Tampung", "Akses Jalan", "Peminat", "Jarak"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbNormalisasi.setRowHeight(35);
+        tbNormalisasi.setSelectionBackground(new java.awt.Color(51, 51, 51));
+        tbNormalisasi.setShowGrid(true);
+        jScrollPane1.setViewportView(tbNormalisasi);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(192, 192, 192))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(126, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tbNormalisasi;
     // End of variables declaration//GEN-END:variables
 }

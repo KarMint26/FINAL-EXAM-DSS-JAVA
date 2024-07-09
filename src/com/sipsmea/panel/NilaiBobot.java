@@ -255,6 +255,9 @@ public class NilaiBobot extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, "Data bobot berhasil diperbarui.", "Sukses",
                         JOptionPane.INFORMATION_MESSAGE);
                 refreshTable();
+                TableFunc.setMinMax();
+                TableFunc.setNormalisasi();
+                TableFunc.setHasilSpk();
             } else {
                 JOptionPane.showMessageDialog(null, "Gagal memperbarui data bobot.", "Gagal", JOptionPane.ERROR_MESSAGE);
             }
